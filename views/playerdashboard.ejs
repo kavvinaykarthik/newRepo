@@ -1,0 +1,141 @@
+<!-- player-dashboard.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Dashboard</title>
+  <!-- Add your CSS link here -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #2ecc71, #3498db);
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #2d1717;
+    }
+
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      margin-top:10px ;
+    }
+
+    .colleague-players-container, .admin-sessions-container {
+      margin-top: 100px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+
+    }
+
+     h2 {
+      margin-bottom: 20px;
+      
+      font-size: 40px;
+    }
+    h1{
+        margin-top: 70px;
+        font-size: 50px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    strong {
+      color: #3498db;
+    }
+
+    .toggle-button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+    <a href="http://localhost:3000/main" style="padding: 10px; font-size: 30px;background-color: darkolivegreen;color: aliceblue;width: fit-content;border-radius: 50px;position: relative;bottom: 300px;right: 80px;">Signout</a>
+  <div class="container">
+    <h1>Welcome to the Player Dashboard!</h1>
+    
+    <!-- Colleague Players Container -->
+    <div class="colleague-players-container" id="colleaguePlayersContainer" style="display: none;">
+      <h2>Co-Players</h2>
+      <ul>
+        <% colleaguePlayers.forEach(player => { %>
+          <li>
+            <strong>Name:</strong> <%= player.firstName %> <%= player.lastName %>, 
+            <strong>Email:</strong> <%= player.email %>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- View Colleague Players Button -->
+    <div class="toggle-button">
+      <button onclick="toggleContainer('colleaguePlayersContainer')">View Co-Players</button>
+    </div>
+
+    <!-- Admin Sessions Container -->
+    <div class="admin-sessions-container" id="adminSessionsContainer">
+      <h2>Upcoming Sessions</h2>
+      <ul>
+        <% adminSessions.forEach(session => { %>
+          <li>
+            <strong>Sport:</strong> <%= session.Sport.name %>, 
+            <strong>Date:</strong> <%= session.date %>,
+            <strong>Time:</strong> <%= session.time %>,
+            <strong>Venue:</strong> <%= session.venue %>
+            <button onclick="joinSession('<%= session.id %>')" id="joinButton_<%= session.id %>">Join Session</button>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- View Admin Sessions Button -->
+    <div class="toggle-button">
+      <button onclick="toggleContainer('adminSessionsContainer')">View Admin Sessions</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleContainer(containerId) {
+      const container = document.getElementById(containerId);
+      container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+    async function joinSession(sessionId) {
+      const joinButton = document.getElementById(`joinButton_${sessionId}`);
+
+      try {
+        // You can add any background logic here if needed
+
+        // Change the button text and disable it (for visual effect)
+        joinButton.textContent = 'Joined';
+        joinButton.disabled = true;
+      } catch (error) {
+        console.error('Error joining session:', error.message);
+      }
+    }
+  </script>
+</body>
+</html>
