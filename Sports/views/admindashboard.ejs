@@ -1,0 +1,183 @@
+<!-- admin-dashboard.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Add your CSS link here -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #2c3e50, #3498db);
+      margin-top: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #2d1717;
+    }
+
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .player-list-container, .created-sessions-container, .create-session-container {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: none;
+
+    }
+    form{
+      padding: 20px;
+      margin: 20px;
+      font-size: 30px;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+      font-size: 40px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    strong {
+      color: #3498db;
+    }
+
+    .toggle-button {
+      margin-top: 10px;
+    }
+    #column{
+      display: flex;
+      flex-direction: column;
+      margin: 100px;
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+<div id="column">
+  <h1>Welcome To The Admin Dashboard!</h1>
+  <a href="http://localhost:3000/main" style="background-color:#2c3e50 ;font-size: 20px;border-radius: 20px;color: aliceblue;padding: 3px;width: fit-content;">Signout</a>
+    <!-- Player List Container -->
+    <div class="player-list-container" id="playersContainer" style="display: none;">
+      <h2>List of Players</h2>
+      <ul>
+        <% players.forEach(player => { %>
+          <li>
+            <strong>Name:</strong> <%= player.firstName %> <%= player.lastName %>, 
+            <strong>Email:</strong> <%= player.email %>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- View Players Button -->
+    <div class="toggle-button">
+      <button onclick="toggleContainer('playersContainer')">View Players</button>
+    </div>
+
+    <!-- Create Session Container -->
+    <div class="create-session-container" id="createSessionContainer" style="display: none;">
+      <h2>Create Session</h2>
+      <form action="/create-session" method="post">
+        <label for="sportId">Sport:</label>
+    <select name="sportId" id="sportId">
+      <option value="1">Cricket</option>
+      <option value="2">Football</option>
+      <option value="3">Tennis</option>
+      <option value="4">Hockey</option>
+    </select>
+        <br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+        <br>
+
+        <label for="time">Time:</label>
+        <input type="time" name="time" required>
+        <br>
+
+        <label for="venue">Venue:</label>
+        <input type="text" name="venue" required>
+        <br>
+
+        <button type="submit">Create Session</button>
+      </form>
+    </div>
+
+    <!-- Create Session Button -->
+    <div class="toggle-button">
+      <button onclick="toggleContainer('createSessionContainer')">Create Session</button>
+    </div>
+
+    <!-- Created Sessions Container -->
+    <div class="created-sessions-container" id="createdSessionsContainer" style="display: block;">
+      <h2>Created Sessions</h2>
+      <ul>
+        <% sessions.forEach(session => { %>
+          <li>
+            <strong>Sport:</strong> <%= session.Sport.name %>, 
+            <strong>Date:</strong> <%= session.date %>,
+            <strong>Time:</strong> <%= session.time %>,
+            <strong>Venue:</strong> <%= session.venue %>
+            <button onclick="deleteSession('<%= session.id %>')">Delete</button>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- View Created Sessions Button -->
+  </div>
+</div>
+  <script>
+    function toggleContainer(containerId) {
+      const container = document.getElementById(containerId);
+      container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+    async function deleteSession(sessionId) {
+      try {
+        const response = await fetch(`/delete-session/${sessionId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          // Refresh the page or update the UI as needed
+          location.reload();
+        } else {
+          console.error('Failed to delete session:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting session:', error.message);
+      }
+    }
+  </script>
+</body>
+</html>
