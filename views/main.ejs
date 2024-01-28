@@ -96,7 +96,7 @@
         <label for="playerPassword">Password:</label>
         <input type="password" id="playerPassword" name="password" required>
         <input type="submit" id="playerLoginBtn" value="Login">
-        <p>Don't have an account yet? <br><a href="http://localhost:3000/signupplayer">Sign Up</a></p>
+        <p>Don't have an account yet? <br><a href="/signupplayer">Sign Up</a></p>
       </form>
     </div>
 
@@ -109,7 +109,7 @@
         <label for="adminPassword">Password:</label>
         <input type="password" id="adminPassword" name="password" required>
         <input type="submit" id="adminLoginBtn" value="Login">
-        <p>Don't have an account yet? <br><a href="http://localhost:3000/signupadmin">Sign Up</a></p>
+        <p>Don't have an account yet? <br><a href="/signupadmin">Sign Up</a></p>
       </form>
     </div>
   </div>
@@ -136,7 +136,7 @@
 
           if (response.ok) {
             // Redirect to player dashboard
-            window.location.href = 'http://localhost:3000/playerdashboard';
+            window.location.href = '/playerdashboard';
           } else {
             // Handle login error
             console.error('Login error:', response.statusText);
@@ -166,7 +166,7 @@
 
           if (response.ok) {
             // Redirect to admin dashboard
-            window.location.href = 'http://localhost:3000/admindashboard';
+            window.location.href = '/admindashboard';
           } else {
             // Handle login error
             console.error('Login error:', response.statusText);
