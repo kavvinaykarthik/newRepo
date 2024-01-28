@@ -352,7 +352,7 @@ app.get('/signupplayer', (req, res) => {
 app.get('/signupadmin', (req, res) => {
   res.render('signupadmin'); // Assuming you have an EJS file named signupplayer.ejs in the 'views' directory
 });
-app.get('/main', (req, res) => {
+app.get('/', (req, res) => {
   res.render('main'); // Assuming you have an EJS file named signupplayer.ejs in the 'views' directory
 });
 
